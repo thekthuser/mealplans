@@ -8,6 +8,7 @@ import (
   "mealplans/models"
   "mealplans/dao"
   "golang.org/x/crypto/bcrypt"
+  "github.com/astaxie/beego/context"
 )
 
 var udao = dao.UserDAO{}
@@ -27,6 +28,19 @@ func IsDate(date string) bool {
   //check date is in MM/DD/YYYY format
   match, _ := regexp.MatchString("[0-9]{2}/[0-9]{2}/[0-9]{4}", date)
   return match
+}
+
+var LoginFilter = func(ctx *context.Context) {
+  username := ctx.Input.Param(":username")
+  password := ctx.Input.Param(":password")
+  user, err := udao.FindByUsername(username)
+  if err != nil {
+    ctx.WriteString("error")
+    ctx.Abort(401, "Bad username or password.")
+  }
+  if !CheckPasswordHash(password, user.Password) {
+    ctx.Abort(401, "Bad username or password.")
+  }
 }
 
 
