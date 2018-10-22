@@ -73,6 +73,7 @@ func (this *APIController) PopulateDB() {
     School: "Uni!",
     Password: passwordHash,
     MealPlanId: p.Id,
+    IsAdmin: true,
 
   }
   err = udao.Insert(u)
