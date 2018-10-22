@@ -144,3 +144,18 @@ func (this *APIController) GetAllPlansInMarket() {
   }
   this.Ctx.WriteString(string(plansJson))
 }
+
+func (this *APIController) GetPlan() {
+  id := this.Ctx.Input.Param(":id")
+  plan, err := pdao.FindById(id)
+  if err != nil {
+    this.Ctx.WriteString("error")
+    return
+  }
+  planJson, err := json.Marshal(plan)
+  if err != nil {
+    this.Ctx.WriteString("error")
+    return
+  }
+  this.Ctx.WriteString(string(planJson))
+}
