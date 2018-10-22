@@ -48,7 +48,7 @@ func (this *APIController) PopulateDB() {
     Id: bson.NewObjectId(),
     Name: "Plan1",
     Cost: 25,
-    Market: "New York",
+    Market: "new_york",
     Semester1Start: "01/01/2018",
     Semester1End: "02/01/2018",
     Semester2Start: "02/02/2018",
@@ -118,6 +118,21 @@ func (this *APIController) CreateUser() {
 
 func (this *APIController) GetAllPlans() {
   plans, err := pdao.FindAll()
+  if err != nil {
+    this.Ctx.WriteString("error")
+    return
+  }
+  plansJson, err := json.Marshal(plans)
+  if err != nil {
+    this.Ctx.WriteString("error")
+    return
+  }
+  this.Ctx.WriteString(string(plansJson))
+}
+
+func (this *APIController) GetAllPlansInMarket() {
+  market := this.Ctx.Input.Param(":market")
+  plans, err := pdao.FindByMarket(market)
   if err != nil {
     this.Ctx.WriteString("error")
     return
