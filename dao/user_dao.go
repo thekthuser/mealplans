@@ -43,6 +43,12 @@ func (u *UserDAO) FindById(id string) (models.User, error) {
   return user, err
 }
 
+func (u *UserDAO) FindByUsername(username string) (models.User, error) {
+  var user models.User
+  err := db.C(PLAN_COLLECTION).Find(bson.M{"username": username}).All(&user)
+  return user, err
+}
+
 /*
 func (u *UserDAO) Update(user models.User) error {
   err := db.C(COLLECTION).UpdateId(u.id, &user)
