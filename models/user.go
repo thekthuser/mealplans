@@ -5,10 +5,10 @@ import (
 )
 
 type User struct {
-  id bson.ObjectId `bson:"_id" json:"id"`
-  mealPlanId string `bson:"mealPlanId" json:"mealPlanId"`
-  username string `bson:"username" json:"username"`
-  password string `bson:"password" json:"password"`
-  name string `bson:"name" json:"name"`
-  school string `bson:"school" json:"school"`
+  Id bson.ObjectId `bson:"_id" json:"id"`
+  MealPlanId string `bson:"mealPlanId" json:"mealPlanId"`
+  Username string `bson:"username" json:"username"`
+  Password string `bson:"password" json:"password"`
+  Name string `bson:"name" json:"name"`
+  School string `bson:"school" json:"school"`
 }
