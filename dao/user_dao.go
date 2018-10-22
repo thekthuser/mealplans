@@ -12,10 +12,10 @@ type UserDAO struct {
   Database string
 }
 
-var db *mgo.Database
+//var db *mgo.Database
 
 const (
-  COLLECTION = "users"
+  USER_COLLECTION = "users"
 )
 
 func (u *UserDAO) Connect() {
@@ -28,18 +28,18 @@ func (u *UserDAO) Connect() {
 
 func (u *UserDAO) FindAll() ([]models.User, error) {
   var users []models.User
-  err := db.C(COLLECTION).Find(bson.M{}).All(&users)
+  err := db.C(USER_COLLECTION).Find(bson.M{}).All(&users)
   return users, err
 }
 
 func (u *UserDAO) Insert(user models.User) error {
-  err := db.C(COLLECTION).Insert(&user)
+  err := db.C(USER_COLLECTION).Insert(&user)
   return err
 }
 
 func (u *UserDAO) FindById(id string) (models.User, error) {
   var user models.User
-  err := db.C(COLLECTION).FindId(bson.ObjectIdHex(id)).One(&user)
+  err := db.C(USER_COLLECTION).FindId(bson.ObjectIdHex(id)).One(&user)
   return user, err
 }
 
