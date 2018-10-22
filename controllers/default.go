@@ -80,6 +80,7 @@ func (this *APIController) PopulateDB() {
     this.Ctx.WriteString("error")
     return
   }
+  this.Ctx.WriteString("Database populated.")
 }
 
 func (this *APIController) GetAllUsers() {
@@ -113,3 +114,17 @@ func (this *APIController) CreateUser() {
   this.Ctx.WriteString(name)
 }
 */
+
+func (this *APIController) GetAllPlans() {
+  plans, err := pdao.FindAll()
+  if err != nil {
+    this.Ctx.WriteString("error")
+    return
+  }
+  plansJson, err := json.Marshal(plans)
+  if err != nil {
+    this.Ctx.WriteString("error")
+    return
+  }
+  this.Ctx.WriteString(string(plansJson))
+}
