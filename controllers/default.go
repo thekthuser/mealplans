@@ -1,6 +1,7 @@
 package controllers
 
 import (
+  "regexp"
   "encoding/json"
 	"github.com/astaxie/beego"
   "gopkg.in/mgo.v2/bson"
@@ -10,6 +11,7 @@ import (
 )
 
 var udao = dao.UserDAO{}
+var pdao = dao.PlanDAO{}
 
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
@@ -19,6 +21,12 @@ func HashPassword(password string) (string, error) {
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
+}
+
+func IsDate(date string) bool {
+  //check date is in MM/DD/YYYY format
+  match, _ := regexp.MatchString("[0-9]{2}/[0-9]{2}/[0-9]{4}", date)
+  return match
 }
 
 
@@ -36,7 +44,26 @@ func (this *MainController) Get() {
 
 
 func (this *APIController) PopulateDB() {
-  //TODO: create a MealPlan first
+  p := models.Plan {
+    Id: bson.NewObjectId(),
+    Name: "Plan1",
+    Cost: 25,
+    Market: "New York",
+    Semester1Start: "01/01/2018",
+    Semester1End: "02/01/2018",
+    Semester2Start: "02/02/2018",
+    Semester2End: "03/01/2018",
+    Semester3Start: "03/02/2018",
+    Semester3End: "04/01/2018",
+    MarketingText1: "MarketingText1!",
+    MarketingText2: "MarketingText2!",
+    MarketingText3: "MarketingText3!",
+  }
+  err := pdao.Insert(p)
+  if err != nil {
+    this.Ctx.WriteString("error")
+    return
+  }
   password := "Apassword"
   passwordHash, _ := HashPassword(password)
   u := models.User {
@@ -45,10 +72,10 @@ func (this *APIController) PopulateDB() {
     Username: "user1",
     School: "Uni!",
     Password: passwordHash,
-    //TODO: MealPlanId
+    MealPlanId: p.Id,
 
   }
-  err := udao.Insert(u)
+  err = udao.Insert(u)
   if err != nil {
     this.Ctx.WriteString("error")
     return
