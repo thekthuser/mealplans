@@ -2,14 +2,23 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
+  "mealplans/dao"
 )
+
+var udao = dao.UserDAO{}
 
 type MainController struct {
 	beego.Controller
 }
 
-func (c *MainController) Get() {
-	c.Data["Website"] = "beego.me"
-	c.Data["Email"] = "astaxie@gmail.com"
-	c.TplName = "index.tpl"
+type APIController struct {
+  beego.Controller
+}
+
+func (this *MainController) Get() {
+  this.Ctx.WriteString("The mealplan API is running.")
+}
+
+
+func (this *APIController) GetAllUsers() {
 }
