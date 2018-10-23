@@ -221,15 +221,12 @@ func (this *APIController) CreatePlan() {
     MarketingText3: marketingtext3,
   }
   pdao.Insert(p)
-  /*
-  planJson, err := json.Marshal(plan)
+  planJson, err := json.Marshal(p)
   if err != nil {
     this.Ctx.ResponseWriter.WriteHeader(500)
     return
   }
   this.Ctx.WriteString(string(planJson))
-  */
-  this.Ctx.WriteString("Plan added.")
 }
 
 func (this *APIController) GetUserPlan() {
@@ -276,7 +273,12 @@ func (this *APIController) EditPlan() {
   plan.MarketingText2 = this.Ctx.Input.Query("marketingtext2")
   plan.MarketingText3 = this.Ctx.Input.Query("marketingtext3")
   pdao.Update(plan)
-  this.Ctx.WriteString("Plan updated.")
+  planJson, err := json.Marshal(plan)
+  if err != nil {
+    this.Ctx.ResponseWriter.WriteHeader(500)
+    return
+  }
+  this.Ctx.WriteString(string(planJson))
 }
 
 func (this *APIController) DuplicatePlan() {
