@@ -53,6 +53,18 @@ var LoginFilter = func(ctx *context.Context) {
   }
 }
 
+var TokenFilter = func(ctx *context.Context) {
+  username := ctx.Input.Param(":username")
+  token := ctx.Input.Param(":token")
+  user, err := udao.FindByUsername(username)
+  if err != nil {
+    ctx.ResponseWriter.WriteHeader(401)
+  }
+  if user.Token != token {
+    ctx.ResponseWriter.WriteHeader(401)
+  }
+}
+
 
 type MainController struct {
 	beego.Controller
