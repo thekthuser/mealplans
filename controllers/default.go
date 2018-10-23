@@ -1,6 +1,7 @@
 package controllers
 
 import (
+  "math/rand"
   "regexp"
   "strconv"
   "encoding/json"
@@ -29,6 +30,15 @@ func IsDate(date string) bool {
   //check date is in MM/DD/YYYY format
   match, _ := regexp.MatchString("[0-9]{2}/[0-9]{2}/[0-9]{4}", date)
   return match
+}
+
+func GenerateUserToken() string {
+  const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  b := make([]byte, 32)
+    for i := range b {
+        b[i] = letterBytes[rand.Int63() % int64(len(letterBytes))]
+    }
+    return string(b)
 }
 
 var LoginFilter = func(ctx *context.Context) {
