@@ -13,4 +13,8 @@ func init() {
     beego.Router("/get_plan/:id:string/", &controllers.APIController{}, "get:GetPlan")
     //beego.Router("/create_user/", &controllers.APIController{}, "post:CreateUser")
     beego.Router("/populate_db/", &controllers.APIController{}, "get:PopulateDB")
+
+    beego.Router("/create_plan/", &controllers.APIController{}, "post:CreatePlan")
+
+    beego.InsertFilter("/create_plan/", beego.BeforeRouter, controllers.LoginFilter)
 }
