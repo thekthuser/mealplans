@@ -2,6 +2,7 @@ package controllers
 
 import (
   "regexp"
+  "strconv"
   "encoding/json"
 	"github.com/astaxie/beego"
   "gopkg.in/mgo.v2/bson"
@@ -35,11 +36,10 @@ var LoginFilter = func(ctx *context.Context) {
   password := ctx.Input.Param(":password")
   user, err := udao.FindByUsername(username)
   if err != nil {
-    ctx.WriteString("error")
-    ctx.Abort(401, "Bad username or password.")
+    ctx.ResponseWriter.WriteHeader(401)
   }
   if !CheckPasswordHash(password, user.Password) {
-    ctx.Abort(401, "Bad username or password.")
+    ctx.ResponseWriter.WriteHeader(401)
   }
 }
 
@@ -172,4 +172,40 @@ func (this *APIController) GetPlan() {
     return
   }
   this.Ctx.WriteString(string(planJson))
+}
+
+func (this *APIController) CreatePlan() {
+  name := this.Ctx.Input.Query("name")
+  cost, err := strconv.Atoi(this.Ctx.Input.Query("cost"))
+  if err != nil {
+    this.Ctx.WriteString("error")
+    return
+  }
+  market := this.Ctx.Input.Query("market")
+  semester1start := this.Ctx.Input.Query("semester1start")
+  semester1end := this.Ctx.Input.Query("semester1end")
+  semester2start := this.Ctx.Input.Query("semester2start")
+  semester2end := this.Ctx.Input.Query("semester2end")
+  semester3start := this.Ctx.Input.Query("semester3start")
+  semester3end := this.Ctx.Input.Query("semester3end")
+  marketingtext1 := this.Ctx.Input.Query("marketingtext1")
+  marketingtext2 := this.Ctx.Input.Query("marketingtext2")
+  marketingtext3 := this.Ctx.Input.Query("marketingtext3")
+  p := models.Plan {
+    Id: bson.NewObjectId(),
+    Name: name,
+    Cost: cost,
+    Market: market,
+    Semester1Start: semester1start,
+    Semester1End: semester1end,
+    Semester2Start: semester2start,
+    Semester2End: semester2end,
+    Semester3Start: semester3start,
+    Semester3End: semester3end,
+    MarketingText1: marketingtext1,
+    MarketingText2: marketingtext2,
+    MarketingText3: marketingtext3,
+  }
+  pdao.Insert(p)
+  this.Ctx.WriteString("Plan added.")//return 200OK instead
 }
