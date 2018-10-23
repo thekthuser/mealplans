@@ -45,7 +45,7 @@ func (u *UserDAO) FindById(id string) (models.User, error) {
 
 func (u *UserDAO) FindByUsername(username string) (models.User, error) {
   var user models.User
-  err := db.C(PLAN_COLLECTION).Find(bson.M{"username": username}).All(&user)
+  err := db.C(PLAN_COLLECTION).Find(bson.M{"username": username}).One(&user)
   return user, err
 }
 
