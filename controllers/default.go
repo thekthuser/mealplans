@@ -174,7 +174,7 @@ func (this *APIController) GetAllPlansInMarket() {
 }
 
 func (this *APIController) GetPlan() {
-  id := this.Ctx.Input.Param(":id")
+  id := this.Ctx.Input.Param(":plan_id")
   plan, err := pdao.FindById(id)
   if err != nil {
     this.Ctx.ResponseWriter.WriteHeader(500)
@@ -250,4 +250,31 @@ func (this *APIController) GetUserPlan() {
     return
   }
   this.Ctx.WriteString(string(planJson))
+}
+
+func (this *APIController) EditPlan() {
+  plan_id := this.Ctx.Input.Query(":plan_id")
+  plan, err := pdao.FindById(plan_id)
+  if err != nil {
+    this.Ctx.ResponseWriter.WriteHeader(500)
+    return
+  }
+  plan.Name = this.Ctx.Input.Query("name")
+  plan.Cost, err = strconv.Atoi(this.Ctx.Input.Query("cost"))
+  if err != nil {
+    this.Ctx.ResponseWriter.WriteHeader(500)
+    return
+  }
+  plan.Market = this.Ctx.Input.Query("market")
+  plan.Semester1Start = this.Ctx.Input.Query("semester1start")
+  plan.Semester1End = this.Ctx.Input.Query("semester1end")
+  plan.Semester2Start = this.Ctx.Input.Query("semester2start")
+  plan.Semester2End = this.Ctx.Input.Query("semester2end")
+  plan.Semester3Start = this.Ctx.Input.Query("semester3start")
+  plan.Semester3End = this.Ctx.Input.Query("semester3end")
+  plan.MarketingText1 = this.Ctx.Input.Query("marketingtext1")
+  plan.MarketingText2 = this.Ctx.Input.Query("marketingtext2")
+  plan.MarketingText3 = this.Ctx.Input.Query("marketingtext3")
+  pdao.Update(plan)
+  this.Ctx.WriteString("Plan updated.")
 }

@@ -49,9 +49,9 @@ func (p *PlanDAO) FindByMarket(market string) ([]models.Plan, error) {
   return plans, err
 }
 
-/*
-func (u *UserDAO) Update(user models.User) error {
-  err := db.C(COLLECTION).UpdateId(u.id, &user)
+func (p *PlanDAO) Update(plan models.Plan) error {
+  err := db.C(PLAN_COLLECTION).UpdateId(plan.Id, &plan)
+  //err := db.C(PLAN_COLLECTION).UpdateId(p.Id, &plan)
+  //err := db.C(PLAN_COLLECTION).UpdateId(bson.ObjectIdHex(p.Id), &plan)
   return err
 }
-*/
