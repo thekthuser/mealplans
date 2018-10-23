@@ -54,9 +54,9 @@ var LoginFilter = func(ctx *context.Context) {
 }
 
 var TokenFilter = func(ctx *context.Context) {
-  username := ctx.Input.Param(":username")
+  user_id := ctx.Input.Param(":user_id")
   token := ctx.Input.Param(":token")
-  user, err := udao.FindByUsername(username)
+  user, err := udao.FindById(user_id)
   if err != nil {
     ctx.ResponseWriter.WriteHeader(401)
   }
@@ -230,4 +230,24 @@ func (this *APIController) CreatePlan() {
   this.Ctx.WriteString(string(planJson))
   */
   this.Ctx.WriteString("Plan added.")
+}
+
+func (this *APIController) GetUserPlan() {
+  user_id := this.Ctx.Input.Param(":user_id")
+  user, err := udao.FindById(user_id)
+  if err != nil {
+    this.Ctx.ResponseWriter.WriteHeader(500)
+    return
+  }
+  plan, err := pdao.FindById(user.MealPlanId.Hex())
+  if err != nil {
+    this.Ctx.ResponseWriter.WriteHeader(500)
+    return
+  }
+  planJson, err := json.Marshal(plan)
+  if err != nil {
+    this.Ctx.ResponseWriter.WriteHeader(500)
+    return
+  }
+  this.Ctx.WriteString(string(planJson))
 }
