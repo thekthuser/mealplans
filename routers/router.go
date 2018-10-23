@@ -25,5 +25,6 @@ func init() {
 
     beego.InsertFilter("/create_plan/", beego.BeforeRouter, controllers.LoginFilter)
     beego.InsertFilter("/edit_plan/:plan_id:string", beego.BeforeRouter, controllers.LoginFilter)
+    beego.InsertFilter("/duplicate_plan/:plan_id:string", beego.BeforeRouter, controllers.LoginFilter)
     beego.InsertFilter("/get_plan/user/:user_id:string/:token:string/", beego.BeforeRouter, controllers.TokenFilter)
 }
