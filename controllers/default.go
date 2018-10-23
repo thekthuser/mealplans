@@ -98,7 +98,7 @@ func (this *APIController) PopulateDB() {
     Password: passwordHash,
     MealPlanId: p.Id,
     IsAdmin: true,
-
+    Token: GenerateUserToken(),
   }
   err = udao.Insert(u)
   if err != nil {
