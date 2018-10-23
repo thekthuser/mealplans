@@ -75,7 +75,7 @@ func (this *APIController) PopulateDB() {
   }
   err := pdao.Insert(p)
   if err != nil {
-    this.Ctx.WriteString("error")
+    ctx.ResponseWriter.WriteHeader(500)
     return
   }
   password := "Apassword"
@@ -92,7 +92,7 @@ func (this *APIController) PopulateDB() {
   }
   err = udao.Insert(u)
   if err != nil {
-    this.Ctx.WriteString("error")
+    ctx.ResponseWriter.WriteHeader(500)
     return
   }
   this.Ctx.WriteString("Database populated.")
@@ -101,20 +101,12 @@ func (this *APIController) PopulateDB() {
 func (this *APIController) GetAllUsers() {
   users, err := udao.FindAll()
   if err != nil {
-    this.Ctx.WriteString("error")
+    ctx.ResponseWriter.WriteHeader(500)
     return
   }
-  /*
-  var output string
-  for _, user := range users {
-    line, _ := json.Marshal(user)
-    output = output + "<br />" + string(line)
-  }
-  this.Ctx.WriteString(output)
-  */
   usersJson, err := json.Marshal(users)
   if err != nil {
-    this.Ctx.WriteString("error")
+    ctx.ResponseWriter.WriteHeader(500)
     return
   }
   this.Ctx.WriteString(string(usersJson))
@@ -133,12 +125,12 @@ func (this *APIController) CreateUser() {
 func (this *APIController) GetAllPlans() {
   plans, err := pdao.FindAll()
   if err != nil {
-    this.Ctx.WriteString("error")
+    ctx.ResponseWriter.WriteHeader(500)
     return
   }
   plansJson, err := json.Marshal(plans)
   if err != nil {
-    this.Ctx.WriteString("error")
+    ctx.ResponseWriter.WriteHeader(500)
     return
   }
   this.Ctx.WriteString(string(plansJson))
@@ -148,12 +140,12 @@ func (this *APIController) GetAllPlansInMarket() {
   market := this.Ctx.Input.Param(":market")
   plans, err := pdao.FindByMarket(market)
   if err != nil {
-    this.Ctx.WriteString("error")
+    ctx.ResponseWriter.WriteHeader(500)
     return
   }
   plansJson, err := json.Marshal(plans)
   if err != nil {
-    this.Ctx.WriteString("error")
+    ctx.ResponseWriter.WriteHeader(500)
     return
   }
   this.Ctx.WriteString(string(plansJson))
@@ -163,22 +155,23 @@ func (this *APIController) GetPlan() {
   id := this.Ctx.Input.Param(":id")
   plan, err := pdao.FindById(id)
   if err != nil {
-    this.Ctx.WriteString("error")
+    ctx.ResponseWriter.WriteHeader(500)
     return
   }
   planJson, err := json.Marshal(plan)
   if err != nil {
-    this.Ctx.WriteString("error")
+    ctx.ResponseWriter.WriteHeader(500)
     return
   }
   this.Ctx.WriteString(string(planJson))
 }
 
 func (this *APIController) CreatePlan() {
+  //sanitize input
   name := this.Ctx.Input.Query("name")
   cost, err := strconv.Atoi(this.Ctx.Input.Query("cost"))
   if err != nil {
-    this.Ctx.WriteString("error")
+    ctx.ResponseWriter.WriteHeader(500)
     return
   }
   market := this.Ctx.Input.Query("market")
@@ -207,5 +200,5 @@ func (this *APIController) CreatePlan() {
     MarketingText3: marketingtext3,
   }
   pdao.Insert(p)
-  this.Ctx.WriteString("Plan added.")//return 200OK instead
+  this.Ctx.WriteString("Plan added.")
 }
