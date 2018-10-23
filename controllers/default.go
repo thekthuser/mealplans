@@ -192,7 +192,7 @@ func (this *APIController) CreatePlan() {
   name := this.Ctx.Input.Query("name")
   cost, err := strconv.Atoi(this.Ctx.Input.Query("cost"))
   if err != nil {
-    this.Ctx.ResponseWriter.WriteHeader(500)
+    this.Ctx.ResponseWriter.WriteHeader(400)
     return
   }
   market := this.Ctx.Input.Query("market")
@@ -259,7 +259,7 @@ func (this *APIController) EditPlan() {
   plan.Name = this.Ctx.Input.Query("name")
   plan.Cost, err = strconv.Atoi(this.Ctx.Input.Query("cost"))
   if err != nil {
-    this.Ctx.ResponseWriter.WriteHeader(500)
+    this.Ctx.ResponseWriter.WriteHeader(400)
     return
   }
   plan.Market = this.Ctx.Input.Query("market")
@@ -285,7 +285,7 @@ func (this *APIController) DuplicatePlan() {
   plan_id := this.Ctx.Input.Query(":plan_id")
   plan, err := pdao.FindById(plan_id)
   if err != nil {
-    this.Ctx.ResponseWriter.WriteHeader(500)
+    this.Ctx.ResponseWriter.WriteHeader(400)
     return
   }
   new_plan := models.Plan {
