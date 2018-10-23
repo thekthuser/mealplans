@@ -278,3 +278,34 @@ func (this *APIController) EditPlan() {
   pdao.Update(plan)
   this.Ctx.WriteString("Plan updated.")
 }
+
+func (this *APIController) DuplicatePlan() {
+  plan_id := this.Ctx.Input.Query(":plan_id")
+  plan, err := pdao.FindById(plan_id)
+  if err != nil {
+    this.Ctx.ResponseWriter.WriteHeader(500)
+    return
+  }
+  new_plan := models.Plan {
+    Id: bson.NewObjectId(),
+    Name: plan.Name,
+    Cost: plan.Cost,
+    Market: plan.Market,
+    Semester1Start: plan.Semester1Start,
+    Semester1End: plan.Semester1End,
+    Semester2Start: plan.Semester2Start,
+    Semester2End: plan.Semester2End,
+    Semester3Start: plan.Semester3Start,
+    Semester3End: plan.Semester3End,
+    MarketingText1: plan.MarketingText1,
+    MarketingText2: plan.MarketingText2,
+    MarketingText3: plan.MarketingText3,
+  }
+  pdao.Insert(new_plan)
+  planJson, err := json.Marshal(new_plan)
+  if err != nil {
+    this.Ctx.ResponseWriter.WriteHeader(500)
+    return
+  }
+  this.Ctx.WriteString(string(planJson))
+}
