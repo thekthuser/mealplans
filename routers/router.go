@@ -7,18 +7,18 @@ import (
 
 func init() {
     beego.Router("/", &controllers.MainController{})
-    beego.Router("/get_users/", &controllers.APIController{}, "get:GetAllUsers")
-    beego.Router("/create_user/", &controllers.APIController{}, "post:CreateUser")
+    beego.Router("/get_users/", &controllers.UserAPIController{}, "get:GetAllUsers")
+    beego.Router("/create_user/", &controllers.UserAPIController{}, "post:CreateUser")
 
-    beego.Router("/get_plans/", &controllers.APIController{}, "get:GetAllPlans")
-    beego.Router("/get_plans/market/:market:string/", &controllers.APIController{}, "get:GetAllPlansInMarket")
-    beego.Router("/get_plan/:plan_id:string/", &controllers.APIController{}, "get:GetPlan")
-    beego.Router("/get_plan/user/:user_id:string/:token:string/", &controllers.APIController{}, "get:GetUserPlan")
+    beego.Router("/get_plans/", &controllers.PlanAPIController{}, "get:GetAllPlans")
+    beego.Router("/get_plans/market/:market:string/", &controllers.PlanAPIController{}, "get:GetAllPlansInMarket")
+    beego.Router("/get_plan/:plan_id:string/", &controllers.PlanAPIController{}, "get:GetPlan")
+    beego.Router("/get_plan/user/:user_id:string/:token:string/", &controllers.PlanAPIController{}, "get:GetUserPlan")
 
-    beego.Router("/create_plan/", &controllers.APIController{}, "post:CreatePlan")
-    beego.Router("/edit_plan/:plan_id:string", &controllers.APIController{}, "post:EditPlan")
-    beego.Router("/duplicate_plan/:plan_id:string", &controllers.APIController{}, "post:DuplicatePlan")
-    beego.Router("/delete_plan/", &controllers.APIController{}, "post:DeletePlan")
+    beego.Router("/create_plan/", &controllers.PlanAPIController{}, "post:CreatePlan")
+    beego.Router("/edit_plan/:plan_id:string", &controllers.PlanAPIController{}, "post:EditPlan")
+    beego.Router("/duplicate_plan/:plan_id:string", &controllers.PlanAPIController{}, "post:DuplicatePlan")
+    beego.Router("/delete_plan/", &controllers.PlanAPIController{}, "post:DeletePlan")
 
     beego.Router("/populate_db/", &controllers.APIController{}, "get:PopulateDB")
 
