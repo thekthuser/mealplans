@@ -26,9 +26,14 @@ func CheckPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-func IsDate(date string) bool {
+func EmptyOrIsDate(date string) bool {
+  /*
+  if date == "" {
+    return true
+  }
+  */
   //check date is in MM/DD/YYYY format
-  match, _ := regexp.MatchString("[0-9]{2}/[0-9]{2}/[0-9]{4}", date)
+  match, _ := regexp.MatchString("^[0-9]{2}/[0-9]{2}/[0-9]{4}$", date)
   return match
 }
 
@@ -205,6 +210,12 @@ func (this *APIController) CreatePlan() {
   marketingtext1 := this.Ctx.Input.Query("marketingtext1")
   marketingtext2 := this.Ctx.Input.Query("marketingtext2")
   marketingtext3 := this.Ctx.Input.Query("marketingtext3")
+  if (!EmptyOrIsDate(semester1start) && !EmptyOrIsDate(semester1end) && 
+      !EmptyOrIsDate(semester2start) && !EmptyOrIsDate(semester2end) && 
+      !EmptyOrIsDate(semester3start) && !EmptyOrIsDate(semester3end)) {
+       this.Ctx.ResponseWriter.WriteHeader(400)
+       return
+  }
   p := models.Plan {
     Id: bson.NewObjectId(),
     Name: name,
@@ -272,6 +283,12 @@ func (this *APIController) EditPlan() {
   plan.MarketingText1 = this.Ctx.Input.Query("marketingtext1")
   plan.MarketingText2 = this.Ctx.Input.Query("marketingtext2")
   plan.MarketingText3 = this.Ctx.Input.Query("marketingtext3")
+  if (!EmptyOrIsDate(semester1start) && !EmptyOrIsDate(semester1end) && 
+      !EmptyOrIsDate(semester2start) && !EmptyOrIsDate(semester2end) && 
+      !EmptyOrIsDate(semester3start) && !EmptyOrIsDate(semester3end)) {
+       this.Ctx.ResponseWriter.WriteHeader(400)
+       return
+  }
   pdao.Update(plan)
   planJson, err := json.Marshal(plan)
   if err != nil {
