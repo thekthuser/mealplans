@@ -4,6 +4,7 @@ import (
   "math/rand"
   "regexp"
   "strconv"
+  "time"
   "encoding/json"
 	"github.com/astaxie/beego"
   "gopkg.in/mgo.v2/bson"
@@ -36,6 +37,7 @@ func EmptyOrIsDate(date string) bool {
 }
 
 func GenerateUserToken() string {
+  rand.Seed(time.Now().UTC().UnixNano())
   const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
   b := make([]byte, 32)
     for i := range b {
