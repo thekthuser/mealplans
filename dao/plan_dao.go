@@ -12,8 +12,6 @@ type PlanDAO struct {
   Database string
 }
 
-//var db *mgo.Database
-
 const (
   PLAN_COLLECTION = "plans"
 )

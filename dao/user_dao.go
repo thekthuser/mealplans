@@ -12,8 +12,6 @@ type UserDAO struct {
   Database string
 }
 
-//var db *mgo.Database
-
 const (
   USER_COLLECTION = "users"
 )
