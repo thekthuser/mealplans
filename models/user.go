@@ -11,6 +11,6 @@ type User struct {
   Password string `bson:"password" json:"password"`
   Name string `bson:"name" json:"name"`
   School string `bson:"school" json:"school"`
-  IsAdmin bool `bson: "isadmin" json: "isadmin"`
+  IsAdmin bool `bson: "isAdmin" json: "isAdmin"`
   Token string `bson: "token" json: "token"`
 }
