@@ -59,6 +59,10 @@ var LoginFilter = func(ctx *context.Context) {
 var TokenFilter = func(ctx *context.Context) {
   user_id := ctx.Input.Param(":user_id")
   token := ctx.Input.Param(":token")
+  if !bson.IsObjectIdHex(user_id) {
+    ctx.ResponseWriter.WriteHeader(400)
+    return
+  }
   user, err := udao.FindById(user_id)
   if err != nil {
     ctx.ResponseWriter.WriteHeader(401)

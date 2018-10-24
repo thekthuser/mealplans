@@ -14,6 +14,10 @@ type PlanAPIController struct {
 
 func (this *PlanAPIController) GetPlan() {
   id := this.Ctx.Input.Param(":plan_id")
+  if !bson.IsObjectIdHex(id) {
+    this.Ctx.ResponseWriter.WriteHeader(400)
+    return
+  }
   plan, err := pdao.FindById(id)
   if err != nil {
     this.Ctx.ResponseWriter.WriteHeader(500)
@@ -104,6 +108,10 @@ func (this *PlanAPIController) CreatePlan() {
 }
 func (this *PlanAPIController) GetUserPlan() {
   user_id := this.Ctx.Input.Param(":user_id")
+  if !bson.IsObjectIdHex(user_id) {
+    this.Ctx.ResponseWriter.WriteHeader(400)
+    return
+  }
   user, err := udao.FindById(user_id)
   if err != nil {
     this.Ctx.ResponseWriter.WriteHeader(500)
@@ -124,6 +132,10 @@ func (this *PlanAPIController) GetUserPlan() {
 
 func (this *PlanAPIController) EditPlan() {
   plan_id := this.Ctx.Input.Query("plan_id")
+  if !bson.IsObjectIdHex(plan_id) {
+    this.Ctx.ResponseWriter.WriteHeader(400)
+    return
+  }
   plan, err := pdao.FindById(plan_id)
   if err != nil {
     this.Ctx.ResponseWriter.WriteHeader(500)
@@ -162,6 +174,10 @@ func (this *PlanAPIController) EditPlan() {
 
 func (this *PlanAPIController) DuplicatePlan() {
   plan_id := this.Ctx.Input.Query("plan_id")
+  if !bson.IsObjectIdHex(plan_id) {
+    this.Ctx.ResponseWriter.WriteHeader(400)
+    return
+  }
   plan, err := pdao.FindById(plan_id)
   if err != nil {
     this.Ctx.ResponseWriter.WriteHeader(400)
@@ -193,6 +209,10 @@ func (this *PlanAPIController) DuplicatePlan() {
 
 func (this *PlanAPIController) DeletePlan() {
   plan_id := this.Ctx.Input.Query("plan_id")
+  if !bson.IsObjectIdHex(plan_id) {
+    this.Ctx.ResponseWriter.WriteHeader(400)
+    return
+  }
   plan, err := pdao.FindById(plan_id)
   if err != nil {
     this.Ctx.ResponseWriter.WriteHeader(400)
