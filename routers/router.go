@@ -16,8 +16,8 @@ func init() {
     beego.Router("/get_plan/user/:user_id:string/:token:string/", &controllers.PlanAPIController{}, "get:GetUserPlan")
 
     beego.Router("/create_plan/", &controllers.PlanAPIController{}, "post:CreatePlan")
-    beego.Router("/edit_plan/:plan_id:string", &controllers.PlanAPIController{}, "post:EditPlan")
-    beego.Router("/duplicate_plan/:plan_id:string", &controllers.PlanAPIController{}, "post:DuplicatePlan")
+    beego.Router("/edit_plan/", &controllers.PlanAPIController{}, "post:EditPlan")
+    beego.Router("/duplicate_plan/", &controllers.PlanAPIController{}, "post:DuplicatePlan")
     beego.Router("/delete_plan/", &controllers.PlanAPIController{}, "post:DeletePlan")
 
     beego.Router("/populate_db/", &controllers.APIController{}, "get:PopulateDB")
