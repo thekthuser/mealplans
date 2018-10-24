@@ -1,0 +1,85 @@
+Preparation:
+=====
+sudo apt-get install golang-go
+sudo apt-get install mongodb
+
+go get -u github.com/astaxie/beego
+go get -u github.com/beego/bee
+go get gopkg.in/mgo.v2
+go get golang.org/x/crypto/bcrypt
+
+cd $GOPATH/src/mealplans
+bee run
+
+
+
+Before first run:
+=====
+Visit /populate_db/ first (and once). This will populate the database with a user and sample plan. To be created: an admin user named "user1" with a password "Apassword" and a plan named "Plan1" in the "new_york" market.
+
+
+Description:
+=====
+Dates must be in the MM/DD/YYYY format.
+The following endpoints are available:
+
+GET /populate_db/
+-- Will populate the database with initial sample data, see above.
+
+GET /get_users/
+-- will return all users as json
+
+GET /get-plans/
+-- will reutrn all plans as json
+
+GET /get_plans/market/:market:string/
+-- will return all plans in specific market as json
+
+GET /get_plan/:plan_id:string/
+-- will return 400 on bad input
+-- will return a specific plan as json
+
+GET /get_plan/user/:user_id:string/:token:string/
+-- matching username and token required, else will return 401
+-- will return 400 on bad input
+-- will return the plan of specified user as json
+
+POST /create_plan/
+-- correct username and password required, else will return 401
+-- will return 400 on bad input
+-- will return newly created plan based on input as json
+
+POST /edit_plan/:plan_id:string/
+-- correct username and password required, else will return 401
+-- will return 400 on bad input
+-- will return edited plan as json
+
+POST /duplicate_plan/:plan_id:string/
+-- correct username and password required, else will return 401
+-- will return 400 on bad input
+-- will return newly duplicated plan as json
+
+POST /create_user/
+-- correct username and password required, else will return 401
+-- new_username and new_password required
+-- will return new user as json
+
+POST /delete_plan/
+-- correct username and password required, else will return 401
+-- will return 400 on bad input
+-- deletes specified plan and clears mealPlanId in any users with said plan
+-- will return "Plan deleted."
+
+Primary resources used:
+=====
+https://hackernoon.com/build-restful-api-in-go-and-mongodb-5e7f2ec4be94
+https://github.com/mlabouardy/movies-restapi
+
+https://medium.com/@kyawmyintthein/building-simple-blog-api-with-golang-mongodb-part-1-d9de449c1fd6
+https://medium.com/@kyawmyintthein/building-simple-blog-api-with-golang-mongodb-part-2-ea76cd4ba63e
+
+
+
+
+
+
