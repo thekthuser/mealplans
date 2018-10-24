@@ -111,7 +111,7 @@ func (this *APIController) PopulateDB() {
     Username: "user1",
     School: "Uni!",
     Password: passwordHash,
-    MealPlanId: p.Id,
+    MealPlanId: p.Id.Hex(),
     IsAdmin: true,
     Token: GenerateUserToken(),
   }
@@ -262,7 +262,7 @@ func (this *APIController) GetUserPlan() {
     this.Ctx.ResponseWriter.WriteHeader(500)
     return
   }
-  plan, err := pdao.FindById(user.MealPlanId.Hex())
+  plan, err := pdao.FindById(user.MealPlanId)
   if err != nil {
     this.Ctx.ResponseWriter.WriteHeader(500)
     return
@@ -276,7 +276,7 @@ func (this *APIController) GetUserPlan() {
 }
 
 func (this *APIController) EditPlan() {
-  plan_id := this.Ctx.Input.Query(":plan_id")
+  plan_id := this.Ctx.Input.Query("plan_id")
   plan, err := pdao.FindById(plan_id)
   if err != nil {
     this.Ctx.ResponseWriter.WriteHeader(500)
@@ -314,7 +314,7 @@ func (this *APIController) EditPlan() {
 }
 
 func (this *APIController) DuplicatePlan() {
-  plan_id := this.Ctx.Input.Query(":plan_id")
+  plan_id := this.Ctx.Input.Query("plan_id")
   plan, err := pdao.FindById(plan_id)
   if err != nil {
     this.Ctx.ResponseWriter.WriteHeader(400)
@@ -342,4 +342,20 @@ func (this *APIController) DuplicatePlan() {
     return
   }
   this.Ctx.WriteString(string(planJson))
+}
+
+func (this *APIController) DeletePlan() {
+  plan_id := this.Ctx.Input.Query("plan_id")
+  plan, err := pdao.FindById(plan_id)
+  if err != nil {
+    this.Ctx.ResponseWriter.WriteHeader(400)
+    return
+  }
+  users, err := udao.FindByMealPlanId(plan_id)
+  for _, user := range users {
+    user.MealPlanId = ""
+    udao.Update(user)
+  }
+  pdao.Delete(plan)
+  this.Ctx.WriteString("Plan deleted.")
 }

@@ -53,3 +53,8 @@ func (p *PlanDAO) Update(plan models.Plan) error {
   err := db.C(PLAN_COLLECTION).UpdateId(plan.Id, &plan)
   return err
 }
+
+func (p *PlanDAO) Delete(plan models.Plan) error {
+  err := db.C(PLAN_COLLECTION).Remove(&plan)
+  return err
+}
